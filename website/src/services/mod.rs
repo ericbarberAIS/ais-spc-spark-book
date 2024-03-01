@@ -1,1 +1,1 @@
-pub mod company;
+pub mod fetch_company;

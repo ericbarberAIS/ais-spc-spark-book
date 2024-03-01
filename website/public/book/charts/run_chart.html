@@ -1,0 +1,304 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Run Charts - Statistical Process Control for Online Analytical Processing</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><li class="part-title">Overview:</li><li class="chapter-item expanded "><a href="../chapter_1.html"><strong aria-hidden="true">1.</strong> The Origin of Statistical Process Control and Shewhart's Contribution</a></li><li class="chapter-item expanded "><a href="../spc_control_charts/shewhart_charts.html"><strong aria-hidden="true">2.</strong> Shewhart Control Charts Overview</a></li><li class="chapter-item expanded "><a href="../spc_control_charts/additional_charts.html"><strong aria-hidden="true">3.</strong> Additional Control Charts Overview</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Presentations</li><li class="chapter-item expanded "><a href="../presentations/hands_on.html"><strong aria-hidden="true">4.</strong> Hands On Lab</a></li><li class="chapter-item expanded "><a href="../presentations/index.html"><strong aria-hidden="true">5.</strong> Shewhart Control Charts</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../charts/run_chart.html" class="active"><strong aria-hidden="true">5.1.</strong> Run Charts</a></li><li class="chapter-item expanded "><a href="../presentations/data_classification.html"><strong aria-hidden="true">5.2.</strong> Data Classification</a></li><li class="chapter-item expanded "><a href="../presentations/pair_data_to_charts.html"><strong aria-hidden="true">5.3.</strong> Data to Control Chart</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.4.</strong> Variable Continuouse Data</div></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><li class="part-title">Case Study</li><li class="chapter-item expanded "><a href="../spc_control_charts/charts/multivariate_control_charts.html"><strong aria-hidden="true">6.</strong> Multivariate Control Charts T-squared (Hotelling's T²)</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Appendix</li><li class="chapter-item expanded "><a href="../appendix/glossory.html"><strong aria-hidden="true">7.</strong> Glossory of Terms</a></li><li class="spacer"></li><li class="chapter-item expanded "><a href="../appendix/contributors.html"><strong aria-hidden="true">8.</strong> Contributors</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Statistical Process Control for Online Analytical Processing</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="run-chart"><a class="header" href="#run-chart">Run Chart</a></h1>
+<p>A run chart is a line chart of data plotted over time. In other words, a run chart graphically depicts the process performance or data values in time order. Viewing data over time gives a more accurate conclusion rather than just summary statistics.</p>
+<p><img src="../static/images/example.png" alt="Run Chart Image" /></p>
+<p>A run chart is also known as a trend chart or a time series plot. Usually, run charts are used in the measure phase of the DMAIC project and it helps to identify trends or shifts in the process and allows testing for randomness in the process.
+Difference between Run chart and control chart</p>
+<p>Control charts are used to monitor the stability of the process. In other words, they measure any type of output variable over time. The goal is to see the results consistently fall within the control limits. On the control chart, both upper and control limits are defined. Typically, control limits are defined as three standard deviations from the mean. If the results fall within the control limits, then the process is stable; otherwise, it suggests that the process is not stable.</p>
+<p>A run chart is similar to a control chart, but the key difference is it can reveal shifts and trends, not the process stability. Since the run chart does not have control limits, it cannot detect out-of-control conditions. However, it will graphically depict how the process is running. You can turn a run chart into a control chart by adding upper and lower control limits. A pattern or trend indicates the presence of special cause variation in the process.</p>
+<h3 id="why-use-a-run-chart"><a class="header" href="#why-use-a-run-chart">Why use a run chart</a></h3>
+<p>A run chart is used to determine whether or not the central tendency of the process is changing. Following are a few reasons to use a run chart</p>
+<ul>
+<li>Easy to construct</li>
+<li>It does not require too many calculations or software’ for analysis.</li>
+<li>Easy to interpret the results</li>
+<li>Minimum statistical knowledge is sufficient to draw and interpret the chart</li>
+</ul>
+<h3 id="when-to-use-run-charts"><a class="header" href="#when-to-use-run-charts">When to use run charts</a></h3>
+<ul>
+<li>To visually depict how the process is performing</li>
+<li>Effectively track and communicate improvements (and determine success)</li>
+<li>To identify process variation and avoid unbiased actions</li>
+<li>Display outputs to look for stability or instability</li>
+</ul>
+<h3 id="key-components-of-run-chart"><a class="header" href="#key-components-of-run-chart">Key components of Run Chart</a></h3>
+<ul>
+<li>Time- series: the specific time period of the output (hours, days, weeks, months); plotted on the horizontal (X) axis</li>
+<li>Output: The data measurement from the completed process; plotted on the vertical (Y) axis</li>
+<li>Data points: output values plotted on the chart</li>
+<li>Median line: the line on the graph that shows the average of all the output measure.</li>
+</ul>
+<h3 id="run-chart-interpretation-rules"><a class="header" href="#run-chart-interpretation-rules">Run chart interpretation rules</a></h3>
+<p>The following paragraphs are the run chart decision rules used to avoid inaccurate analysis and initiate appropriate improvement actions:</p>
+<p><img src="../static/images/shift.png" alt="Shift Image" /></p>
+<p>Shift: – Seven or eight values in succession above or below the median line is a shift. Do not consider the points that fall on the median line as they are not toward or against the shift. A shift indicates a dramatic change in the process.</p>
+<p><img src="../static/images/runs.png" alt="Run Image" /></p>
+<p>Runs – Too many or too few runs in the data displayed on the chart. In other words, one or more consecutive points are all lying on the same side of the line. Ignore the points exactly on the line!</p>
+<p><img src="../static/images/clustering.png" alt="Clustering Image" /></p>
+<p>Clustering – Too few runs or groups of points in one or more areas of the plot. It indicates measurement or sampling problems.</p>
+<p><img src="../static/images/trend.png" alt="Trend Image" /></p>
+<p>Trend – Seven or more consecutive points are increasing or decreasing. A basic rule of thumb is when a run chart exhibits seven or eight points successively up or down, then a trend is clearly present in the data and needs process improvement. This rule does not care whether the consecutive points are above, below, or crossing the median.</p>
+<p><img src="../static/images/mixtures.png" alt="Mixtures Image" /></p>
+<p>Mixtures – Too many runs in a chart with absences of points near the median line.</p>
+<p><img src="../static/images/astronomical.png" alt="Astronomical Image" /></p>
+<p>Astronomical Point – Astronomical points occur when there is one value that is very different from the other data values on the chart. It would be a value that is highly unlikely to occur again and would appear as an outlier.</p>
+<h3 id="counting-run-chart"><a class="header" href="#counting-run-chart">Counting Run Chart</a></h3>
+<p>A non-random pattern is signaled by too few or too many runs, or crossings of the median line. A run is a series of points in a row on one side of the median. In other words, one or more consecutive points are all lying on the same side of the line. If only chance is influencing the process being measured with a run chart, then there should be a regularity at which data points go above and below the median to satisfy this condition. Some points can fall exactly on the median line, which makes it hard to decide which run these points belong to. Hence, ignore if the value is exactly on the median line.</p>
+<p>To apply the above-mentioned interpretation of the rules, we first need to identify the useful values/observations in the data set. This can be achieved by counting the number of runs and avoiding the values on the median line.</p>
+<p>If you observe a greater or fewer number of runs than expected in the chart, that means there is a non-random pattern in the process. Swed and Eisenhart developed a chart in 1943 to determine the minimum and the maximum number of runs required for each data point to follow the random variation in the process. In other words, no special cause existed in the process.</p>
+<h3 id="swed-and-eisenhart-chart"><a class="header" href="#swed-and-eisenhart-chart">Swed and Eisenhart chart</a></h3>
+<p><img src="../static/images/swed-eisenhart.png" alt="Swed and Eisenhart Chart Image" /></p>
+<h3 id="how-to-create-run-chart"><a class="header" href="#how-to-create-run-chart">How to create run chart</a></h3>
+<ul>
+<li>Determine the data to be measured</li>
+<li>Obtain the data – collect a minimum of 10 to 15 data points in a time sequence.</li>
+<li>Plot a graph with a time sequence in the horizontal x-axis (like, hours, days, weeks) and a vertical y-axis with measuring variables.</li>
+<li>Plot the data values in a time sequence</li>
+<li>Compute the mean/median and draw a horizontal line in the graph</li>
+<li>Analyze the graph, and observe the trends and patterns to detect special cause variation in the process</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../presentations/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../presentations/data_classification.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../presentations/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../presentations/data_classification.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="../ace.js"></script>
+        <script src="../editor.js"></script>
+        <script src="../mode-rust.js"></script>
+        <script src="../theme-dawn.js"></script>
+        <script src="../theme-tomorrow_night.js"></script>
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

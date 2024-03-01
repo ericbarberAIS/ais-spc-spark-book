@@ -1,4 +1,7 @@
+use wasm_logger;
+
 mod components;
+mod firebase;
 mod models;
 mod pages;
 mod router;

@@ -15,11 +15,11 @@ pub enum Route {
     #[at("/contact")]
     Contact,
 
-    #[at("/")]
-    Home,
-
     #[at("/spc")]
     SPCBook,
+
+    #[at("/")]
+    Home,
 
     #[not_found]
     #[at("/404")]
@@ -32,16 +32,16 @@ pub fn switch(routes: Route) -> Html {
             html! { <About /> }
         }
 
+        Route::SPCBook => {
+            html! { <BookRedirect /> }
+        }
+
         Route::Contact => {
             html! { <Contact /> }
         }
 
         Route::Home => {
             html! { <Home /> }
-        }
-
-        Route::SPCBook => {
-            html! { <BookRedirect /> }
         }
 
         Route::NotFound => {

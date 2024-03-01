@@ -1,0 +1,614 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Hands On Lab - Statistical Process Control for Online Analytical Processing</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><li class="part-title">Overview:</li><li class="chapter-item expanded "><a href="../chapter_1.html"><strong aria-hidden="true">1.</strong> The Origin of Statistical Process Control and Shewhart's Contribution</a></li><li class="chapter-item expanded "><a href="../spc_control_charts/shewhart_charts.html"><strong aria-hidden="true">2.</strong> Shewhart Control Charts Overview</a></li><li class="chapter-item expanded "><a href="../spc_control_charts/additional_charts.html"><strong aria-hidden="true">3.</strong> Additional Control Charts Overview</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Presentations</li><li class="chapter-item expanded "><a href="../presentations/hands_on.html" class="active"><strong aria-hidden="true">4.</strong> Hands On Lab</a></li><li class="chapter-item expanded "><a href="../presentations/index.html"><strong aria-hidden="true">5.</strong> Shewhart Control Charts</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../charts/run_chart.html"><strong aria-hidden="true">5.1.</strong> Run Charts</a></li><li class="chapter-item expanded "><a href="../presentations/data_classification.html"><strong aria-hidden="true">5.2.</strong> Data Classification</a></li><li class="chapter-item expanded "><a href="../presentations/pair_data_to_charts.html"><strong aria-hidden="true">5.3.</strong> Data to Control Chart</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.4.</strong> Variable Continuouse Data</div></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><li class="part-title">Case Study</li><li class="chapter-item expanded "><a href="../spc_control_charts/charts/multivariate_control_charts.html"><strong aria-hidden="true">6.</strong> Multivariate Control Charts T-squared (Hotelling's T²)</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Appendix</li><li class="chapter-item expanded "><a href="../appendix/glossory.html"><strong aria-hidden="true">7.</strong> Glossory of Terms</a></li><li class="spacer"></li><li class="chapter-item expanded "><a href="../appendix/contributors.html"><strong aria-hidden="true">8.</strong> Contributors</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Statistical Process Control for Online Analytical Processing</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="hands-on-example"><a class="header" href="#hands-on-example">Hands On Example</a></h1>
+<h2 id="coffee-shop-example-description"><a class="header" href="#coffee-shop-example-description">Coffee Shop Example Description</a></h2>
+<p>In this scenario, we explore a coffee shop's daily operations, focusing on various aspects like order processing times, customer satisfaction, and sales data. This coffee shop serves as a microcosm for understanding how small businesses operate and manage quality control, efficiency, and customer satisfaction. By collecting data on how long it takes to process orders, how satisfied customers are with their service, and how much revenue is generated, we can apply statistical methods to analyze and improve the coffee shop's performance.
+Objective</p>
+<p>The primary aim is to teach users about Statistical Process Control (SPC) using a relatable and easily understood example. SPC is a method of quality control which employs statistical methods to monitor and control a process. This helps ensure the process operates at its fullest potential to produce conforming product with minimal waste (rework or scrap). SPC can identify when a process is behaving as expected or when it deviates significantly from this state, signaling that there might be a particular cause of variation that needs to be addressed.</p>
+<h2 id="goals-in-the-coffee-shop-context"><a class="header" href="#goals-in-the-coffee-shop-context">Goals in the Coffee Shop Context</a></h2>
+<ul>
+<li>
+<p><strong>Understand Process Behavior:</strong> By analyzing order processing times, we can understand how efficiently the coffee shop operates on a daily basis. SPC charts help in identifying trends, shifts, or any outliers in the process.</p>
+</li>
+<li>
+<p><strong>Improve Customer Satisfaction:</strong> Monitoring customer feedback through SPC charts enables us to pinpoint areas of improvement. It can reveal whether changes in the process positively or negatively affect customer satisfaction.</p>
+</li>
+<li>
+<p><strong>Financial Performance Monitoring:</strong> Sales data analysis through SPC can highlight patterns, such as peak hours or days and the effectiveness of promotions, guiding better business decisions.</p>
+</li>
+<li>
+<p><strong>Quality Control:</strong> Through continuous monitoring of these metrics, the coffee shop can maintain high standards of service quality, ensuring that customers receive consistent and satisfactory service.</p>
+</li>
+</ul>
+<h2 id="teaching-approach"><a class="header" href="#teaching-approach">Teaching Approach</a></h2>
+<p>Using the coffee shop example, we can teach users how to apply SPC charts, such as X-bar and R charts for order processing times, P charts for customer satisfaction, and C charts for defect tracking (e.g., incorrect orders). This practical application helps users grasp the principles of SPC in a familiar setting, making the learning process more intuitive and engaging. By analyzing mock data generated and expanded upon with each &quot;click,&quot; users learn how to interpret these charts, identify signals within the data, and make informed decisions to improve the process.</p>
+<p>This hands-on approach demystifies statistical methods and provides valuable insights into how small changes can significantly impact a business's overall performance and customer satisfaction.</p>
+<hr />
+<h2 id="mock-data"><a class="header" href="#mock-data">Mock Data</a></h2>
+<pre><code class="language-python">from pyspark.sql import SparkSession
+from pyspark.sql.types import StructType, StructField, DateType, StringType, FloatType, BooleanType
+from pyspark.sql.functions import lit, rand, randn
+import datetime
+
+# Function to generate data
+def generate_data(existing_df, num_records=100):
+   
+    &quot;&quot;&quot;
+    Generate simulated data for a coffee shop.
+    &quot;&quot;&quot;
+    # Generate timestamps
+    time_increments = np.random.normal(loc=5, scale=1, size=num_records).clip(min=1)
+    timestamps = [start_datetime + timedelta(minutes=np.sum(time_increments[:i])) for i in range(1, num_records + 1)]
+
+    # Order processing times (normally distributed around 5 minutes with a standard deviation of 2)
+    order_processing_times = np.random.normal(loc=5, scale=2, size=num_records).clip(min=0)  # Ensure no negative times
+    order_processing_times = order_processing_times.tolist()
+    
+    # Generate customer satisfaction levels
+    customer_satisfaction_choices = ['Very Satisfied', 'Satisfied', 'Neutral', 'Unsatisfied', 'Very Unsatisfied']
+    customer_satisfaction = np.random.choice(customer_satisfaction_choices, size=num_records).tolist()
+    
+    # Generate sales amounts and round them
+    sales_amount = np.round(np.random.uniform(3, 20, size=num_records), 2)
+    sales_amount = sales_amount.tolist()  # Convert to Python float list
+    
+    # Generate correctness of orders
+    order_correct = np.random.choice([True, False], p=[0.9, 0.1], size=num_records)
+    order_correct = list(map(bool, order_correct))
+    
+    # Prepare data for DataFrame creation
+    data = list(zip(timestamps, customer_satisfaction, sales_amount, order_correct, order_processing_times))
+    
+    # Define schema
+    schema = StructType([
+        StructField(&quot;DateTime&quot;, TimestampType(), True),
+        StructField(&quot;Customer Satisfaction&quot;, StringType(), True),
+        StructField(&quot;Sales Amount ($)&quot;, FloatType(), True),
+        StructField(&quot;Order Correct&quot;, BooleanType(), True),
+        StructField(&quot;Order Processing Time (mins)&quot;, DoubleType(), True)
+    ])
+    
+    # Create a DataFrame from the generated data
+    new_data = spark.createDataFrame(data, schema=schema)
+    
+    # If there's existing data, append the new data
+    if existing_df is not None and not existing_df.rdd.isEmpty():
+        updated_df = existing_df.union(new_data)
+    else:
+        updated_df = new_data
+    
+    return updated_df
+
+# Initialize Spark Session
+spark = SparkSession.builder.appName(&quot;CoffeeShopDataGeneration&quot;).getOrCreate()
+
+# Define the schema of the DataFrame
+schema = StructType([
+    StructField(&quot;Date&quot;, DateType(), True),
+    StructField(&quot;Order Processing Time (mins)&quot;, FloatType(), True),
+    StructField(&quot;Customer Satisfaction&quot;, StringType(), True),
+    StructField(&quot;Sales Amount ($)&quot;, FloatType(), True),
+    StructField(&quot;Order Correct&quot;, StringType(), True)
+])
+
+# Create an empty DataFrame with the defined schema
+# This is your starting point and can be used as input to the generate_data function
+coffee_df = spark.createDataFrame(spark.sparkContext.emptyRDD(), schema)
+
+
+# Example: Assuming existing_df is your existing PySpark DataFrame
+coffee_df = generate_data(coffee_df, 100)
+</code></pre>
+<hr />
+<h2 id="line-chart"><a class="header" href="#line-chart">Line Chart</a></h2>
+<p>Below, I'll outline the code for generating three separate line charts in a Databricks notebook, one for each of the specified metrics: Order Processing Time (mins), Sales Amount ($), and Order Correct percentage over time. Each section of code is meant to be run in its own cell within a Databricks notebook.</p>
+<h3 id="1-order-processing-time-mins"><a class="header" href="#1-order-processing-time-mins">1. Order Processing Time (mins)</a></h3>
+<p>This cell will calculate the average order processing time per day.</p>
+<pre><code class="language-python">
+# Calculate average order processing time per day
+order_processing_time_daily_avg = existing_df.groupBy(&quot;Date&quot;).avg(&quot;Order Processing Time (mins)&quot;).orderBy(&quot;Date&quot;)
+
+# Display the DataFrame for plotting in Databricks
+display(order_processing_time_daily_avg)
+</code></pre>
+<h3 id="2-sales-amount-"><a class="header" href="#2-sales-amount-">2. Sales Amount ($)</a></h3>
+<p>This cell will calculate the total sales amount per day.</p>
+<pre><code class="language-python">
+# Calculate total sales amount per day
+sales_amount_daily_sum = existing_df.groupBy(&quot;Date&quot;).sum(&quot;Sales Amount ($)&quot;).orderBy(&quot;Date&quot;)
+
+# Display the DataFrame for plotting in Databricks
+display(sales_amount_daily_sum)
+</code></pre>
+<h3 id="3-order-correct-percentage"><a class="header" href="#3-order-correct-percentage">3. Order Correct Percentage</a></h3>
+<p>For the Order Correct percentage, you'll first need to calculate the daily percentage of orders that were correct. This involves counting the number of correct orders per day, dividing by the total number of orders that day, and then multiplying by 100 to get a percentage.</p>
+<pre><code class="language-python">
+from pyspark.sql.functions import sum as _sum, count as _count, col
+
+# Calculate daily percentage of orders that were correct
+order_correct_daily_percentage = existing_df.groupBy(&quot;Date&quot;).agg(
+    (_sum(col(&quot;Order Correct&quot;).cast(&quot;int&quot;)) / _count(&quot;*&quot;) * 100).alias(&quot;Order Correct Percentage&quot;)
+).orderBy(&quot;Date&quot;)
+
+# Display the DataFrame for plotting in Databricks
+display(order_correct_daily_percentage)
+</code></pre>
+<h3 id="using-databricks-plotting-tool"><a class="header" href="#using-databricks-plotting-tool">Using Databricks Plotting Tool</a></h3>
+<p>After running each cell, you can use Databricks' built-in plotting tool to create line charts for each metric. Here's how to do it for each cell's output:</p>
+<ul>
+<li>For the output of each cell, you'll see a table with your data and a set of options for visualization at the bottom of the cell's output area.</li>
+<li>Select the 'Line' chart option from the visualization menu.</li>
+<li>Configure the chart:
+<ul>
+<li>For the X-axis, select Date.</li>
+<li>For the Y-axis, choose the corresponding metric (e.g., the average for order processing time, the sum for sales amount, and the percentage for order correctness).</li>
+</ul>
+</li>
+<li>Apply any additional customizations as needed, such as titles, axis labels, or line colors.</li>
+</ul>
+<p>By following these instructions, you'll be able to visualize trends in order processing time, sales amount, and order accuracy over time, providing valuable insights into the coffee shop's daily operations and areas for potential improvement.</p>
+<hr />
+<h2 id="run-chart"><a class="header" href="#run-chart">Run Chart</a></h2>
+<p>Creating run charts for the specified metrics involves a similar process to generating line charts, focusing on the same metrics but with an emphasis on identifying trends, shifts, or patterns over time. In a Databricks notebook, you'll use the same aggregation methods to prepare the data. A run chart essentially is a line chart with a focus on analyzing the data over time, so the preparation of data remains consistent. Below are the code snippets for each metric to be run in separate cells in a Databricks notebook.</p>
+<h3 id="mean-of-median"><a class="header" href="#mean-of-median">Mean of Median</a></h3>
+<p>The choice between mean and median depends on the data's distribution and the presence of outliers. The mean, providing the arithmetic average, is best used for data that is symmetrically distributed with few outliers, as it considers all values. However, it can be misleading for skewed distributions or when outliers significantly impact the average. The median, identifying the middle value, is more robust in skewed distributions or when outliers are present, as it is less affected by extreme values. For small datasets, both can be informative, but for larger datasets, the median can provide a clearer picture of central tendency in the presence of skewness or outliers.</p>
+<h3 id="go-to"><a class="header" href="#go-to">GO TO:</a></h3>
+<ul>
+<li><a href="#median-as-measure-of-central-tendency">Median as Measure of Central Tendency</a></li>
+<li><a href="#mean-as-measure-of-central-tendency">Mean as Measure of Central Tendency</a></li>
+</ul>
+<h3 id="median-as-measure-of-central-tendency"><a class="header" href="#median-as-measure-of-central-tendency">Median as Measure of Central Tendency</a></h3>
+<h4 id="1-order-processing-time-mins-median"><a class="header" href="#1-order-processing-time-mins-median">1. Order Processing Time (mins) (Median)</a></h4>
+<p>Calculate the average order processing time per day:</p>
+<pre><code class="language-python">from pyspark.sql.functions import expr
+
+# Calculate average order processing time per day
+order_processing_time_daily_avg = existing_df.groupBy(&quot;Date&quot;).avg(&quot;Order Processing Time (mins)&quot;).orderBy(&quot;Date&quot;)
+
+# Calculate the overall median of order processing times
+median_order_processing_time = existing_df.approxQuantile(&quot;Order Processing Time (mins)&quot;, [0.5], 0)[0]
+
+# Add the median as a constant column to the daily average DataFrame
+order_processing_time_daily_avg = order_processing_time_daily_avg.withColumn(&quot;Median Order Processing Time&quot;, lit(median_order_processing_time))
+
+# Display the DataFrame for plotting in Databricks as a run chart with median
+display(order_processing_time_daily_avg)
+</code></pre>
+<h4 id="2-sales-amount--median"><a class="header" href="#2-sales-amount--median">2. Sales Amount ($) (Median)</a></h4>
+<p>Calculate the total sales amount per day:</p>
+<pre><code class="language-python"># Calculate total sales amount per day
+sales_amount_daily_sum = existing_df.groupBy(&quot;Date&quot;).sum(&quot;Sales Amount ($)&quot;).orderBy(&quot;Date&quot;)
+
+# Calculate the overall median of sales amounts
+median_sales_amount = existing_df.approxQuantile(&quot;Sales Amount ($)&quot;, [0.5], 0)[0]
+
+# Add the median as a constant column to the daily sum DataFrame
+sales_amount_daily_sum = sales_amount_daily_sum.withColumn(&quot;Median Sales Amount&quot;, lit(median_sales_amount))
+
+# Display the DataFrame for plotting in Databricks as a run chart with median
+display(sales_amount_daily_sum)
+</code></pre>
+<h4 id="3-order-correct-percentage-median"><a class="header" href="#3-order-correct-percentage-median">3. Order Correct Percentage (Median)</a></h4>
+<p>Calculate the daily percentage of orders that were correct:</p>
+<pre><code class="language-python">from pyspark.sql.functions import sum as _sum, count as _count, col
+
+# Calculate daily percentage of orders that were correct
+order_correct_daily_percentage = existing_df.groupBy(&quot;Date&quot;).agg(
+    (_sum(col(&quot;Order Correct&quot;).cast(&quot;int&quot;)) / _count(&quot;*&quot;) * 100).alias(&quot;Order Correct Percentage&quot;)
+).orderBy(&quot;Date&quot;)
+
+# Calculate the overall median of the order correct percentage
+median_order_correct_percentage = order_correct_daily_percentage.approxQuantile(&quot;Order Correct Percentage&quot;, [0.5], 0)[0]
+
+# Add the median as a constant column to the daily percentage DataFrame
+order_correct_daily_percentage = order_correct_daily_percentage.withColumn(&quot;Median Order Correct Percentage&quot;, lit(median_order_correct_percentage))
+
+# Display the DataFrame for plotting in Databricks as a run chart with median
+display(order_correct_daily_percentage)
+</code></pre>
+<h3 id="mean-as-measure-of-central-tendency"><a class="header" href="#mean-as-measure-of-central-tendency">Mean as Measure of Central Tendency</a></h3>
+<h4 id="1-order-processing-time-mins-mean"><a class="header" href="#1-order-processing-time-mins-mean">1. Order Processing Time (mins) (Mean)</a></h4>
+<p>Calculate the average order processing time per day:</p>
+<pre><code class="language-python">from pyspark.sql.functions import avg, lit
+
+# Calculate average order processing time per day
+order_processing_time_daily_avg = existing_df.groupBy(&quot;Date&quot;).avg(&quot;Order Processing Time (mins)&quot;).orderBy(&quot;Date&quot;)
+
+# Calculate the overall mean of order processing times
+mean_order_processing_time = existing_df.agg(avg(&quot;Order Processing Time (mins)&quot;).alias(&quot;mean&quot;)).collect()[0][&quot;mean&quot;]
+
+# Add the mean as a constant column to the daily average DataFrame
+order_processing_time_daily_avg = order_processing_time_daily_avg.withColumn(&quot;Mean Order Processing Time&quot;, lit(mean_order_processing_time))
+
+# Display the DataFrame for plotting in Databricks as a run chart with mean
+display(order_processing_time_daily_avg)
+</code></pre>
+<h4 id="2-sales-amount--mean"><a class="header" href="#2-sales-amount--mean">2. Sales Amount ($) (Mean)</a></h4>
+<p>Calculate the total sales amount per day:</p>
+<pre><code class="language-python">from pyspark.sql.functions import sum as _sum, count as _count, col
+
+# Calculate daily percentage of orders that were correct
+order_correct_daily_percentage = existing_df.groupBy(&quot;Date&quot;).agg(
+    (_sum(col(&quot;Order Correct&quot;).cast(&quot;int&quot;)) / _count(&quot;*&quot;) * 100).alias(&quot;Order Correct Percentage&quot;)
+).orderBy(&quot;Date&quot;)
+
+# Calculate the overall mean of the order correct percentage
+mean_order_correct_percentage = order_correct_daily_percentage.approxQuantile(&quot;Order Correct Percentage&quot;, [0.5], 0)[0]
+
+# Add the mean as a constant column to the daily percentage DataFrame
+order_correct_daily_percentage = order_correct_daily_percentage.withColumn(&quot;Mean Order Correct Percentage&quot;, lit(mean_order_correct_percentage))
+
+# Display the DataFrame for plotting in Databricks as a run chart with mean
+display(order_correct_daily_percentage)
+</code></pre>
+<h4 id="3-order-correct-percentage-mean"><a class="header" href="#3-order-correct-percentage-mean">3. Order Correct Percentage (Mean)</a></h4>
+<p>Calculate the daily percentage of orders that were correct:</p>
+<pre><code class="language-python">from pyspark.sql.functions import sum as _sum, count as _count, col
+
+# Calculate daily percentage of orders that were correct
+order_correct_daily_percentage = existing_df.groupBy(&quot;Date&quot;).agg(
+    (_sum(col(&quot;Order Correct&quot;).cast(&quot;int&quot;)) / _count(&quot;*&quot;) * 100).alias(&quot;Order Correct Percentage&quot;)
+).orderBy(&quot;Date&quot;)
+
+# Calculate the overall mean of the order correct percentage
+mean_order_correct_percentage = order_correct_daily_percentage.agg(avg(&quot;Order Correct Percentage&quot;).alias(&quot;mean&quot;)).collect()[0][&quot;mean&quot;]
+
+# Add the mean as a constant column to the daily percentage DataFrame
+order_correct_daily_percentage = order_correct_daily_percentage.withColumn(&quot;Mean Order Correct Percentage&quot;, lit(mean_order_correct_percentage))
+
+# Display the DataFrame for plotting in Databricks as a run chart with mean
+display(order_correct_daily_percentage)
+</code></pre>
+<h3 id="plotting-run-charts-in-databricks"><a class="header" href="#plotting-run-charts-in-databricks">Plotting Run Charts in Databricks</a></h3>
+<p>After preparing the data as shown above, you can plot run charts using Databricks' plotting tool. The steps to visualize the data as run charts are the same as for line charts:</p>
+<ul>
+<li>After executing each cell, observe the table and visualization options below the output area.</li>
+<li>Choose the 'Line' chart visualization type. While run charts and line charts use the same type of visualization, the interpretation focuses on process stability and trends for run charts.</li>
+<li>Set up your axes:
+<ul>
+<li>Use Date for the X-axis.</li>
+<li>For the Y-axis, select the appropriate metric (average for Order Processing Time, sum for Sales Amount, and percentage for Order Correct).</li>
+</ul>
+</li>
+<li>Customize your chart as needed, focusing on clarity for analyzing trends and shifts over time.</li>
+</ul>
+<p>These run charts will help you identify any patterns, trends, or shifts in the data, which are critical for process analysis and improvement. Pay attention to runs (sequences of points above or below the measure of central tendency), trends (continuous increase or decrease), and any shifts in the process level, as these can indicate changes in the coffee shop's operations.</p>
+<hr />
+<h2 id="control-chart"><a class="header" href="#control-chart">Control Chart</a></h2>
+<p>Shewhart control charts are a fundamental tool in statistical process control (SPC) used to determine if a manufacturing or business process is in a state of control. For the metrics chosen for the coffee shop example, different types of control charts are appropriate based on the nature of the data (continuous vs. attribute) and its distribution. Here’s the best type of Shewhart control chart for each metric:</p>
+<h3 id="1-order-processing-time-mins-1"><a class="header" href="#1-order-processing-time-mins-1">1. Order Processing Time (mins)</a></h3>
+<ul>
+<li>
+<p><strong>Metric Type:</strong> Continuous data.</p>
+</li>
+<li>
+<p><strong>Best Control Chart:</strong> The Individuals Control Chart (I-MR Chart) is most suitable for order processing time. This chart is ideal for continuous data that comes from a process where data points are collected individually in a sequential order. It helps in monitoring the process mean and variation over time.</p>
+</li>
+</ul>
+<h3 id="2-sales-amount--1"><a class="header" href="#2-sales-amount--1">2. Sales Amount ($)</a></h3>
+<ul>
+<li>
+<p><strong>Metric Type:</strong> Continuous data.</p>
+</li>
+<li>
+<p><strong>Best Control Chart:</strong> Similar to order processing time, the Individuals Control Chart (I-MR Chart) is also the best choice for monitoring sales amount. This metric represents continuous data that can vary significantly from one transaction to another, making the I-MR chart an excellent tool for identifying out-of-control signals that could indicate a need for process improvement.</p>
+</li>
+</ul>
+<h3 id="3-order-correct-boolean-yesno"><a class="header" href="#3-order-correct-boolean-yesno">3. Order Correct (Boolean: Yes/No)</a></h3>
+<ul>
+<li>
+<p><strong>Metric Type:</strong> Attribute data (binary outcomes).</p>
+</li>
+<li>
+<p><strong>Best Control Chart:</strong> The P-Chart (Proportion Chart) is the most appropriate for the &quot;Order Correct&quot; metric. This chart is used for attribute data where the data can be categorized into &quot;conforming&quot; and &quot;non-conforming&quot; (or, in this case, correct and incorrect orders) and the sample size can vary. It monitors the proportion of nonconforming units in a sample, providing insights into the process's stability in terms of order accuracy.
+Summary</p>
+</li>
+</ul>
+<p>I-MR Chart for continuous data like &quot;Order Processing Time&quot; and &quot;Sales Amount,&quot; to monitor individual measurements and their variability.</p>
+<p>P-Chart for attribute data like &quot;Order Correct,&quot; to track the proportion of conforming vs. non-conforming items when the sample size may vary.</p>
+<p>Each chart provides a visual means of identifying trends, shifts, or instances of the process being out of control, facilitating timely interventions and continuous process improvement.</p>
+<h2 id="i-mr-chart"><a class="header" href="#i-mr-chart">I-MR Chart</a></h2>
+<h3 id="step-1-aggregate-daily-average-for-order-processing-time-mins"><a class="header" href="#step-1-aggregate-daily-average-for-order-processing-time-mins">Step 1: Aggregate Daily Average for &quot;Order Processing Time (mins)&quot;</a></h3>
+<pre><code class="language-python">
+from pyspark.sql.window import Window
+from pyspark.sql.functions import lag, col, abs, avg, lit
+
+# Assuming existing_df is your initial DataFrame
+order_processing_time_daily_avg = existing_df.groupBy(&quot;Date&quot;).avg(&quot;Order Processing Time (mins)&quot;).orderBy(&quot;Date&quot;)
+</code></pre>
+<h3 id="step-2-calculate-moving-range-of-daily-averages"><a class="header" href="#step-2-calculate-moving-range-of-daily-averages">Step 2: Calculate Moving Range of Daily Averages</a></h3>
+<pre><code class="language-python">
+windowSpec = Window.orderBy(&quot;Date&quot;)
+
+order_processing_time_daily_avg = order_processing_time_daily_avg.withColumn(&quot;PrevDayAvg&quot;, lag(&quot;avg(Order Processing Time (mins))&quot;, 1).over(windowSpec))
+order_processing_time_daily_avg = order_processing_time_daily_avg.withColumn(&quot;MovingRange&quot;, abs(col(&quot;avg(Order Processing Time (mins))&quot;) - col(&quot;PrevDayAvg&quot;)))
+</code></pre>
+<h3 id="step-3-calculate-mean-moving-range-and-estimated-standard-deviation"><a class="header" href="#step-3-calculate-mean-moving-range-and-estimated-standard-deviation">Step 3: Calculate Mean Moving Range and Estimated Standard Deviation</a></h3>
+<pre><code class="language-python">
+# Calculate the mean of the Moving Range
+mean_moving_range = order_processing_time_daily_avg.select(avg(&quot;MovingRange&quot;)).first()[0]
+
+# Estimating standard deviation from the Moving Range (using d2 = 1.128 for n=2)
+estimated_stddev = mean_moving_range / 1.128
+</code></pre>
+<h3 id="step-4-calculate-ucl-and-lcl-for-the-i-chart"><a class="header" href="#step-4-calculate-ucl-and-lcl-for-the-i-chart">Step 4: Calculate UCL and LCL for the I Chart</a></h3>
+<pre><code class="language-python">
+# Calculate mean of daily averages for the metric
+mean_daily_avg = order_processing_time_daily_avg.select(avg(&quot;avg(Order Processing Time (mins))&quot;)).first()[0]
+
+# Calculate UCL and LCL for I chart
+ucl_i = mean_daily_avg + 3 * estimated_stddev
+lcl_i = mean_daily_avg - 3 * estimated_stddev if mean_daily_avg - 3 * estimated_stddev &gt; 0 else 0
+
+order_processing_time_daily_avg = order_processing_time_daily_avg.withColumn(&quot;UCL_I&quot;, lit(ucl_i)).withColumn(&quot;LCL_I&quot;, lit(lcl_i))
+</code></pre>
+<h3 id="step-5-calculate-ucl-for-the-mr-chart-lcl-is-typically-0"><a class="header" href="#step-5-calculate-ucl-for-the-mr-chart-lcl-is-typically-0">Step 5: Calculate UCL for the MR Chart (LCL is typically 0)</a></h3>
+<pre><code class="language-python">
+# UCL for MR chart, using fixed multiplier for n=2
+ucl_mr = mean_moving_range * 3.268
+
+order_processing_time_daily_avg = order_processing_time_daily_avg.withColumn(&quot;UCL_MR&quot;, lit(ucl_mr)).withColumn(&quot;LCL_MR&quot;, lit(0))
+</code></pre>
+<h3 id="final-dataframe-for-visualization"><a class="header" href="#final-dataframe-for-visualization">Final DataFrame for Visualization</a></h3>
+<p>At this point, order_processing_time_daily_avg contains the following columns, ready for visualization in Databricks:</p>
+<ul>
+<li>Date</li>
+<li>avg(Order Processing Time (mins)) (Daily average of order processing time)</li>
+<li>MovingRange (Daily moving range of average order processing time)</li>
+<li>UCL_I and LCL_I (Upper and lower control limits for the I chart)</li>
+<li>UCL_MR (Upper control limit for the MR chart, with LCL_MR typically set to 0 or not used)</li>
+</ul>
+<p>Instructions for Visualization in Databricks</p>
+<ul>
+<li>
+<p>For the I Chart: When visualizing, plot Date on the X-axis and avg(Order Processing Time (mins)), UCL_I, and LCL_I on the Y-axis to show the daily averages along with their control limits.</p>
+</li>
+<li>
+<p>For the MR Chart: Plot Date on the X-axis and MovingRange, UCL_MR (and LCL_MR if applicable) on the Y-axis to visualize the moving range and its upper control limit.</p>
+</li>
+</ul>
+<p>This approach ensures you're visualizing the aggregated summary data with the appropriate statistical control limits to assess process stability and control effectively.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../spc_control_charts/additional_charts.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../presentations/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../spc_control_charts/additional_charts.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../presentations/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="../ace.js"></script>
+        <script src="../editor.js"></script>
+        <script src="../mode-rust.js"></script>
+        <script src="../theme-dawn.js"></script>
+        <script src="../theme-tomorrow_night.js"></script>
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

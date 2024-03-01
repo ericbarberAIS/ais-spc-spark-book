@@ -1,0 +1,275 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Glossory of Terms - Statistical Process Control for Online Analytical Processing</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><li class="part-title">Overview:</li><li class="chapter-item expanded "><a href="../chapter_1.html"><strong aria-hidden="true">1.</strong> The Origin of Statistical Process Control and Shewhart's Contribution</a></li><li class="chapter-item expanded "><a href="../spc_control_charts/shewhart_charts.html"><strong aria-hidden="true">2.</strong> Shewhart Control Charts Overview</a></li><li class="chapter-item expanded "><a href="../spc_control_charts/additional_charts.html"><strong aria-hidden="true">3.</strong> Additional Control Charts Overview</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Presentations</li><li class="chapter-item expanded "><a href="../presentations/hands_on.html"><strong aria-hidden="true">4.</strong> Hands On Lab</a></li><li class="chapter-item expanded "><a href="../presentations/index.html"><strong aria-hidden="true">5.</strong> Shewhart Control Charts</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../charts/run_chart.html"><strong aria-hidden="true">5.1.</strong> Run Charts</a></li><li class="chapter-item expanded "><a href="../presentations/data_classification.html"><strong aria-hidden="true">5.2.</strong> Data Classification</a></li><li class="chapter-item expanded "><a href="../presentations/pair_data_to_charts.html"><strong aria-hidden="true">5.3.</strong> Data to Control Chart</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.4.</strong> Variable Continuouse Data</div></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><li class="part-title">Case Study</li><li class="chapter-item expanded "><a href="../spc_control_charts/charts/multivariate_control_charts.html"><strong aria-hidden="true">6.</strong> Multivariate Control Charts T-squared (Hotelling's T²)</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Appendix</li><li class="chapter-item expanded "><a href="../appendix/glossory.html" class="active"><strong aria-hidden="true">7.</strong> Glossory of Terms</a></li><li class="spacer"></li><li class="chapter-item expanded "><a href="../appendix/contributors.html"><strong aria-hidden="true">8.</strong> Contributors</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Statistical Process Control for Online Analytical Processing</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="glossory-of-terms"><a class="header" href="#glossory-of-terms">Glossory of Terms</a></h1>
+<h4 id="control-chart"><a class="header" href="#control-chart">Control Chart:</a></h4>
+<ul>
+<li>A control chart is one of the primary techniques of statistical process control (SPC). The control chart is a graphical display of quality characteristics that have been measured or computed from a sample versus the sample number or time. The control chart was invented by Walter Shewhart at Bell Labs in 1920.</li>
+</ul>
+<h4 id="statistical-process-control"><a class="header" href="#statistical-process-control">Statistical Process Control:</a></h4>
+<ul>
+<li>Statistical Process Control (SPC) is a statistical method to measure, monitor, and control a process. In other words, SPC is a quality control method that employs statistical methods to measure, monitor, and control a process.</li>
+</ul>
+<h4 id="common-cause"><a class="header" href="#common-cause">Common Cause:</a></h4>
+<ul>
+<li>A cause of variation in the process is due to chance but not assignable to any factor. It is the variation that is inherent in the process. A process under the influence of a common cause will always be stable and predictable.</li>
+</ul>
+<h4 id="assignable-cause-special-cause"><a class="header" href="#assignable-cause-special-cause">Assignable Cause (“Special Cause”):</a></h4>
+<ul>
+<li>The variation in a process that is not due to chance can be identified and eliminated. A process under the influence of a special cause will not be stable and predictable.</li>
+</ul>
+<h4 id="rational-sub-grouping"><a class="header" href="#rational-sub-grouping">Rational Sub-Grouping:</a></h4>
+<ul>
+<li>Rational sub-grouping is the process of organizing the data into groups produced under the same conditions. Rational subgroups help in the estimation process of short-term variations. Thus, rational subgrouping is the basis for operating control charts in a successful manner. These variations later help us predict the long-term variations and their control limits, depending o the type of causes for the variation (special or common).</li>
+</ul>
+<h4 id="quantitative-data--"><a class="header" href="#quantitative-data--">Quantitative Data: -</a></h4>
+<h4 id="qualitative-data--"><a class="header" href="#qualitative-data--">Qualitative Data: -</a></h4>
+<h4 id="continuoue-data--"><a class="header" href="#continuoue-data--">Continuoue Data: -</a></h4>
+<h4 id="discrete-data--"><a class="header" href="#discrete-data--">Discrete Data: -</a></h4>
+<h4 id="nominal-data--"><a class="header" href="#nominal-data--">Nominal Data: -</a></h4>
+<h4 id="ordinal-data--"><a class="header" href="#ordinal-data--">Ordinal Data: -</a></h4>
+<h4 id="interval-data--"><a class="header" href="#interval-data--">Interval Data: -</a></h4>
+<h4 id="ratio-data--"><a class="header" href="#ratio-data--">Ratio Data: -</a></h4>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../spc_control_charts/charts/multivariate_control_charts.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../appendix/contributors.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../spc_control_charts/charts/multivariate_control_charts.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../appendix/contributors.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="../ace.js"></script>
+        <script src="../editor.js"></script>
+        <script src="../mode-rust.js"></script>
+        <script src="../theme-dawn.js"></script>
+        <script src="../theme-tomorrow_night.js"></script>
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

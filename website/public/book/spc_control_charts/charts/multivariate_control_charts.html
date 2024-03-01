@@ -1,0 +1,306 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Multivariate Control Charts T-squared (Hotelling&#x27;s T²) - Statistical Process Control for Online Analytical Processing</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon.svg">
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
+        <link rel="stylesheet" href="../../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../../highlight.css">
+        <link rel="stylesheet" href="../../tomorrow-night.css">
+        <link rel="stylesheet" href="../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><li class="part-title">Overview:</li><li class="chapter-item expanded "><a href="../../chapter_1.html"><strong aria-hidden="true">1.</strong> The Origin of Statistical Process Control and Shewhart's Contribution</a></li><li class="chapter-item expanded "><a href="../../spc_control_charts/shewhart_charts.html"><strong aria-hidden="true">2.</strong> Shewhart Control Charts Overview</a></li><li class="chapter-item expanded "><a href="../../spc_control_charts/additional_charts.html"><strong aria-hidden="true">3.</strong> Additional Control Charts Overview</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Presentations</li><li class="chapter-item expanded "><a href="../../presentations/hands_on.html"><strong aria-hidden="true">4.</strong> Hands On Lab</a></li><li class="chapter-item expanded "><a href="../../presentations/index.html"><strong aria-hidden="true">5.</strong> Shewhart Control Charts</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../charts/run_chart.html"><strong aria-hidden="true">5.1.</strong> Run Charts</a></li><li class="chapter-item expanded "><a href="../../presentations/data_classification.html"><strong aria-hidden="true">5.2.</strong> Data Classification</a></li><li class="chapter-item expanded "><a href="../../presentations/pair_data_to_charts.html"><strong aria-hidden="true">5.3.</strong> Data to Control Chart</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.4.</strong> Variable Continuouse Data</div></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><li class="part-title">Case Study</li><li class="chapter-item expanded "><a href="../../spc_control_charts/charts/multivariate_control_charts.html" class="active"><strong aria-hidden="true">6.</strong> Multivariate Control Charts T-squared (Hotelling's T²)</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Appendix</li><li class="chapter-item expanded "><a href="../../appendix/glossory.html"><strong aria-hidden="true">7.</strong> Glossory of Terms</a></li><li class="spacer"></li><li class="chapter-item expanded "><a href="../../appendix/contributors.html"><strong aria-hidden="true">8.</strong> Contributors</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Statistical Process Control for Online Analytical Processing</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="t-squared-hotellings-t²t-squared-hotellings-t²-method-for-multivariate-control-charts"><a class="header" href="#t-squared-hotellings-t²t-squared-hotellings-t²-method-for-multivariate-control-charts">T-squared (Hotelling's T²)T-squared (Hotelling's T²) method for Multivariate Control Charts</a></h1>
+<p>The T-squared (Hotelling's T²) method for Multivariate Control Charts is an extension of Shewhart control charts to monitor and control processes based on multiple interrelated quality variables. Unlike the traditional Shewhart charts that are univariate, focusing on a single quality characteristic at a time, the T-squared method allows for simultaneous monitoring of several related quality characteristics. This approach is particularly useful in situations where the quality of a process or product depends on more than one variable, and those variables may be correlated.</p>
+<h2 id="overview-of-the-t-squared-method"><a class="header" href="#overview-of-the-t-squared-method">Overview of the T-squared Method:</a></h2>
+<p>The T-squared method is based on Hotelling's T² statistic, which is a multivariate equivalent of the univariate Z-score. It provides a way to test hypotheses about means of multivariate normal distributions. In the context of SPC, the T² statistic is used to determine if a set of multivariate measurements is statistically similar to a set of control measurements. The steps to develop a Multivariate Control Chart using the T-squared method are as follows:</p>
+<ol>
+<li>
+<p>Data Collection and Preparation:</p>
+<ul>
+<li>Collect sample data for the multivariate process. Each sample should include measurements for all variables being monitored.</li>
+<li>Ensure data is normalized if scales of measurements differ significantly among variables.</li>
+</ul>
+</li>
+<li>
+<p>Calculate the Sample Mean and Covariance Matrix:</p>
+<ul>
+<li>Calculate the mean vector and the covariance matrix from the historical process data (the phase I dataset), which is assumed to be in control.</li>
+</ul>
+</li>
+<li>
+<p>Compute the T-squared Statistic for New Observations:</p>
+<ul>
+<li>For a new sample (a vector of measurements for the monitored variables), calculate the T-squared statistic using the formula:
+T2=(x−xˉ)′S−1(x−xˉ)
+T2=(x−xˉ)′S−1(x−xˉ)<br />
+where:
+<ul>
+<li>xx is the vector of new observations,</li>
+<li>xˉxˉ is the mean vector of the in-control process,</li>
+<li>S−1S−1 is the inverse of the covariance matrix of the in-control process,</li>
+<li>T2T2 is the Hotelling's T-squared statistic.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Determine Control Limits:</p>
+<ul>
+<li>The upper control limit (UCL) for the T-squared chart can be determined using the χ2χ2 (chi-square) distribution:
+UCL=(p⋅(n−1)⋅(n+1))n⋅(n−p)⋅Fα,p,n−p
+UCL=n⋅(n−p)(p⋅(n−1)⋅(n+1))​⋅Fα,p,n−p​<br />
+where:
+<ul>
+<li>pp is the number of variables,</li>
+<li>nn is the sample size,</li>
+<li>Fα,p,n−pFα,p,n−p​ is the F-distribution value at a chosen αα significance level, with degrees of freedom pp and n−pn−p.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Plot and Monitor the Chart:</p>
+<ul>
+<li>Plot the T-squared statistic for each new set of measurements against the UCL.</li>
+<li>Investigate any points that exceed the UCL as potential signals that the process may be out of control.</li>
+</ul>
+</li>
+</ol>
+<h2 id="application"><a class="header" href="#application">Application:</a></h2>
+<p>The T-squared method is widely used in industries where quality is defined by multiple interrelated variables, such as manufacturing complex components requiring tight tolerances on multiple dimensions, chemical process industries where product quality depends on a combination of factors, or any process where monitoring multiple variables simultaneously can provide a more comprehensive view of process stability and capability.</p>
+<p>This approach offers a powerful tool for quality control in multivariate processes, enabling the detection of out-of-control conditions that might not be identified by monitoring variables individually. However, it requires a solid understanding of multivariate statistics and careful consideration of the relationships among the variables being monitored.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../presentations/pair_data_to_charts.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../../appendix/glossory.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../presentations/pair_data_to_charts.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../../appendix/glossory.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="../../ace.js"></script>
+        <script src="../../editor.js"></script>
+        <script src="../../mode-rust.js"></script>
+        <script src="../../theme-dawn.js"></script>
+        <script src="../../theme-tomorrow_night.js"></script>
+
+        <script src="../../elasticlunr.min.js"></script>
+        <script src="../../mark.min.js"></script>
+        <script src="../../searcher.js"></script>
+
+        <script src="../../clipboard.min.js"></script>
+        <script src="../../highlight.js"></script>
+        <script src="../../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

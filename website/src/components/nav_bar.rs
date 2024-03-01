@@ -1,46 +1,35 @@
+use crate::router::Route;
 use yew::prelude::*;
 use yew_router::prelude::*;
 
-use crate::router::Route;
-
-pub struct Navbar {
-    pub navbar_active: bool,
+#[derive(Properties, PartialEq, Clone)]
+pub struct NavbarProps {
+    pub company_name: Option<String>,
 }
 
-pub enum Msg {
-    ToggleNavbar,
-}
+#[function_component(Navbar)]
+pub fn navbar(props: &NavbarProps) -> Html {
+    let navbar_active = use_state(|| false);
 
-impl Component for Navbar {
-    type Message = Msg;
-    type Properties = ();
+    let toggle_navbar = {
+        let navbar_active = navbar_active.clone();
+        Callback::from(move |_| navbar_active.set(!*navbar_active))
+    };
 
-    fn create(_ctx: &Context<Self>) -> Self {
-        Self {
-            navbar_active: false,
-        }
-    }
+    let active_class = if *navbar_active { "is-active" } else { "" };
 
-    fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
-        match msg {
-            Msg::ToggleNavbar => {
-                self.navbar_active = !self.navbar_active;
-                true
-            }
-        }
-    }
-
-    fn view(&self, ctx: &Context<Self>) -> Html {
-        let active_class = if self.navbar_active { "is-active" } else { "" };
-
-        html! {
+    html! {
+        <div class="hero-head">
             <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
                 <div class="navbar-brand">
-                    <h1 class="navbar-item is-size-3">{ "Company Name" }</h1>
+                    // Display the company name if it's available
+                    <h1 class="navbar-item is-size-3">
+                        { props.company_name.clone().unwrap_or_else(|| "Default Company".to_string()) }
+                    </h1>
 
                     <button class={classes!("navbar-burger", "burger", active_class)}
                         aria-label="menu" aria-expanded="false"
-                        onclick={ctx.link().callback(|_| Msg::ToggleNavbar)}
+                        onclick={toggle_navbar}
                     >
                         <span aria-hidden="true"></span>
                         <span aria-hidden="true"></span>
@@ -48,8 +37,20 @@ impl Component for Navbar {
                     </button>
                 </div>
                 <div class={classes!("navbar-menu", active_class)}>
-                    <div class="navbar-start">
-                        // Add your links here
+                    <div class="navbar-end mr-2">
+                        // Add router links here
+
+                        // Navbar drop down
+                            <div class="navbar-item has-dropdown is-hoverable">
+                                <div class="navbar-link">
+                                    { "Material" }
+                                </div>
+                                <div class="navbar-dropdown">
+                                    <Link<Route> classes={classes!("navbar-item")} to={Route::SPCBook}>
+                                        { "Statistical Process Control" }
+                                    </Link<Route>>
+                                </div>
+                            </div>
 
                         <Link<Route> classes={classes!("navbar-item")} to={Route::Home}>
                             { "Home" }
@@ -63,21 +64,10 @@ impl Component for Navbar {
                             { "Contact" }
                         </Link<Route>>
 
-                        // Navbar drop down
-                        <div class="navbar-item has-dropdown is-hoverable">
-                            <div class="navbar-link">
-                                { "Material" }
-                            </div>
-                            <div class="navbar-dropdown">
-                                <Link<Route> classes={classes!("navbar-item")} to={Route::SPCBook}>
-                                    { "Statistical Process Control" }
-                                </Link<Route>>
-                            </div>
-                        </div>
-                        // end of drop down menu
+                        // Additional links and components as before
                     </div>
                 </div>
             </nav>
-        }
+        </div>
     }
 }

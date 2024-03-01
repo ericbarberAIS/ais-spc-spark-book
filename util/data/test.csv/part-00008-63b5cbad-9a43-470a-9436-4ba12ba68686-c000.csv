@@ -1,0 +1,7 @@
+DateTime,Customer Satisfaction,Sales Amount ($),Order Correct,Order Processing Time (mins)
+2024-02-29T15:44:23.658-07:00,Very Unsatisfied,6.38,true,1.679684047569248
+2024-02-29T15:50:50.881-07:00,Satisfied,19.36,true,6.134343117908658
+2024-02-29T15:56:48.129-07:00,Satisfied,9.52,true,2.1957632582761373
+2024-02-29T16:02:39.014-07:00,Very Satisfied,6.18,true,4.066570661067463
+2024-02-29T16:07:22.785-07:00,Very Satisfied,5.9,true,5.732094550643895
+2024-02-29T16:14:09.000-07:00,Very Unsatisfied,13.68,true,3.0737204710543296
